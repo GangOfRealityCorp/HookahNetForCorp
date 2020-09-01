@@ -39,5 +39,9 @@ namespace HookahNet.Model.Entities
             }
             return total;
         }
+        public Order CreateOrder()
+        {
+            return new Order();
+        }
     }
 }
