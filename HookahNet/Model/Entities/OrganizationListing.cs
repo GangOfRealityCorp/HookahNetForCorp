@@ -21,6 +21,7 @@ namespace HookahNet.Model.Entities
         {
             this.Organizations = new List<Organization>();
             //TODO: will make via standart List() methods.
+            // Просто проверяю как работает пулл-реквест
         }
     }
 }
