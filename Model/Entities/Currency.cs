@@ -10,12 +10,17 @@ namespace HookahNet.Model.Entities
         public string CurrencyName { get; private set; }
         public int CurrencyValue { get; private set; }
 
+        public Currency()
+        {
+            CurrencyName = Enum.GetName(typeof(Currencies), 0);
+            CurrencyValue = 0;
+        }
         public enum Currencies { USD, EUR, RUB };
 
-        public void SetCurrency(int currency)
+        public void SetCurrency(Currencies currency)
         {
-            CurrencyName = Enum.GetName(typeof(Currencies), currency);
-            CurrencyValue = currency;
+            CurrencyName = Enum.GetName(typeof(Currencies), (int)currency);
+            CurrencyValue = (int)currency;
         }
     }
 }
