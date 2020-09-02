@@ -7,25 +7,15 @@ namespace HookahNet.Model.Entities
 {
     public class Currency
     {
-        private string currency;
-        //public string Currency
-        //{
-        //    get
-        //    {
-        //        return currency;
-        //    }
-        //    set
-        //    {
+        public string CurrencyName { get; private set; }
+        public int CurrencyValue { get; private set; }
 
-        //        currency = value;
-        //    }
-        //}
+        public enum Currencies { USD, EUR, RUB };
 
-        private enum currencies { USD, EUR, RUB };
-
-        public void SetCurrency(string currency)
+        public void SetCurrency(int currency)
         {
-            //TODO: map with enum
+            CurrencyName = Enum.GetName(typeof(Currencies), currency);
+            CurrencyValue = currency;
         }
     }
 }
