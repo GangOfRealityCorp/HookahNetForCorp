@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using HookahNet.Model.Products;
+using HookahNet.Models.Products;
 
-namespace HookahNet.Model
+namespace HookahNet.Models
 {
     public class ShoppingCart
     {

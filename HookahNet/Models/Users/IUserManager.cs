@@ -1,4 +1,4 @@
-﻿namespace HookahNet.Model.Users
+﻿namespace HookahNet.Models.Users
 {
     public interface IUserManager
     {

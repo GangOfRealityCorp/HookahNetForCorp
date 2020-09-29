@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HookahNet.Model.Users
+namespace HookahNet.Models.Users
 {
     public class UserManager : IUserManager
     {
