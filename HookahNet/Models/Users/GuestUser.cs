@@ -7,7 +7,7 @@ namespace HookahNet.Models
 {
     public class GuestUser : IGuestUser
     {
-        public int Id { get; set; }
+        public int Id { get; }
         public string Name { get; private set; }
         public string Password { get; private set; }
         public GuestUser(string Name, string Password)
