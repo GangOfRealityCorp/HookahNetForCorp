@@ -21,7 +21,6 @@ namespace HookahNet.Models
         public void ConvertToOrder(ShoppingCart shoppingCart, IGuestUser customer)
         {
             IOrder order = new Order(shoppingCart, customer);
-            customer.AddOrder(order);
         }
     }
 }
