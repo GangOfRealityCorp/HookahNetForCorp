@@ -7,7 +7,8 @@ namespace HookahNet.Models
 {
     public interface IUser
     {
-        int Id { get; }
+        Guid Id { get; }
+        public string Email { get; }
         string Name { get; }
         string Password { get; }
     }
