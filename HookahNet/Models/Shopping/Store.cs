@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HookahNet.Model
+namespace HookahNet.Models
 {
     public class Store
     {
@@ -21,7 +21,6 @@ namespace HookahNet.Model
         public void ConvertToOrder(ShoppingCart shoppingCart, IGuestUser customer)
         {
             IOrder order = new Order(shoppingCart, customer);
-            customer.AddOrder(order);
         }
     }
 }

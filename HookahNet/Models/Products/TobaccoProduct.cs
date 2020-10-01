@@ -1,10 +1,10 @@
-﻿using HookahNet.Model.Products;
+﻿using HookahNet.Models.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HookahNet.Model
+namespace HookahNet.Models
 {
     public class TobaccoProduct : IProduct
     {
