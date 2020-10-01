@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 
 using HookahNet.Controllers.DBContexts;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using HookahNet.Controllers.Account;
 
 namespace HookahNet
 {
@@ -22,15 +25,30 @@ namespace HookahNet
             this.configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = false,
+                            ValidIssuer = AuthOptions.ISSUER,
+
+                            ValidateAudience = false,
+                            ValidAudience = AuthOptions.AUDIENCE,
+
+                            ValidateLifetime = true,
+
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        };
+                    });
             services.AddDbContext<StoreContext>((options) => options.UseSqlServer(configuration.GetConnectionString("SQLServer")));
             services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -40,13 +58,12 @@ namespace HookahNet
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapGet("/", async context =>
-                //{
-                //    await context.Response.WriteAsync("Hello World!");
-                //});
             });
         }
     }
