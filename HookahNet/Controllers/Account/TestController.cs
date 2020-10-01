@@ -16,7 +16,7 @@ namespace HookahNet.Controllers.Account
         [Authorize]
         public IActionResult ValidateStatus()
         {
-            return Ok("everything is ok, even after ContiniousDelivery");
+            return Ok("everything is ok, even after ContiniousDelivery on DockerHub");
         }
     }
 }
