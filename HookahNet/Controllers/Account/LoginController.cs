@@ -15,7 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace HookahNet.Controllers.Account
 {
-    [Route("Account/{controller}")]
+    [Route("Account/[controller]")]
     [ApiController]
     public class LoginController : Controller
     {

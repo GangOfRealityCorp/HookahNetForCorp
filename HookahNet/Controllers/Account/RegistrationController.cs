@@ -13,7 +13,7 @@ using HookahNet.Controllers.ControllerModels;
 namespace HookahNet.Controllers
 {
     [ApiController]
-    [Route("Account/{controller}")]
+    [Route("Account/[controller]")]
     public class RegistrationController : ControllerBase
     {
         private readonly StoreContext context;
