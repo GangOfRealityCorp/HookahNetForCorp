@@ -28,6 +28,8 @@ namespace HookahNet
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -61,8 +63,9 @@ namespace HookahNet
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseRouting();
+            app.UseCors(builder => builder.AllowAnyOrigin());
 
             app.UseAuthentication();
             app.UseAuthorization();
