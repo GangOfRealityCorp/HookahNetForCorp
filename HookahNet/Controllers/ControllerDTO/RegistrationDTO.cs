@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HookahNet.Controllers.ControllerModels
+namespace HookahNet.Controllers.ControllerDTO
 {
-    public class LoginModel
+    public class RegistrationDTO
     {
         public string Email { get; set; }
+        public string Name { get; set; }
         public string Password { get; set; }
     }
 }

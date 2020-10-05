@@ -7,12 +7,22 @@ namespace HookahNet.Models
 {
     public class Organization
     {
-        private string Name;
-        private Catalog catalog;
+        public Guid Id { get; private set; }
+        public string Name { get; private set; }
+        public Catalog Catalog { get; private set; }
+
+        public Organization()
+        {
+        }
+        public Organization(string name)
+        {
+            this.Name = name;
+            this.Catalog = new Catalog();
+        }
 
         public Catalog GetCatalog()
         {
-            return catalog;
+            return Catalog;
         }
     }
 }

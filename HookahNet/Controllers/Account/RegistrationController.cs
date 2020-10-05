@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 using HookahNet.Controllers.DBContexts;
 using HookahNet.Models;
-using HookahNet.Controllers.ControllerModels;
+using HookahNet.Controllers.ControllerDTO;
 
 namespace HookahNet.Controllers
 {
@@ -29,7 +29,7 @@ namespace HookahNet.Controllers
         /// <param name="guestUser"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> RegistrateGuestUser([FromBody] RegistrationModel registrationModel)
+        public async Task<IActionResult> RegistrateGuestUser([FromBody] RegistrationDTO registrationModel)
         {
             var guestUser = await context.guestUserTable.FirstOrDefaultAsync((user) => user.Email == registrationModel.Email);
             if (guestUser == null)

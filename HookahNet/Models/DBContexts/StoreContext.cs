@@ -10,6 +10,8 @@ namespace HookahNet.Controllers.DBContexts
             Database.EnsureCreated();
         }
         public DbSet<GuestUser> guestUserTable { get; set; }
+        public DbSet<Organization> organizationTable { get; set; }
+        public DbSet<Catalog> catalogTable { get; set; }
 
     }
 }

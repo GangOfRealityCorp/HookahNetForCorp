@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 using HookahNet.Controllers.DBContexts;
 using HookahNet.Models;
-using HookahNet.Controllers.ControllerModels;
+using HookahNet.Controllers.ControllerDTO;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 
@@ -31,7 +31,7 @@ namespace HookahNet.Controllers.Account
         /// <param name="guestUser"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> LoginGuestUser([FromBody] LoginModel loginModel)
+        public async Task<IActionResult> LoginGuestUser([FromBody] LoginDTO loginModel)
         {
             bool isIdentity = await GetIdentity(loginModel);
 
@@ -47,7 +47,7 @@ namespace HookahNet.Controllers.Account
             return Json(response);
         }
 
-        private async Task<bool> GetIdentity(LoginModel loginModel)
+        private async Task<bool> GetIdentity(LoginDTO loginModel)
         {
             var guestUser = await context.guestUserTable.FirstOrDefaultAsync((user) => user.Email == loginModel.Email && user.Password == loginModel.Password);
             if (guestUser == null)
@@ -55,7 +55,7 @@ namespace HookahNet.Controllers.Account
             return true;
         }
 
-        private string GenerateToken(LoginModel loginModel)
+        private string GenerateToken(LoginDTO loginModel)
         {
             var currentTime = DateTime.UtcNow;
             // create JWT-token
