@@ -1,21 +1,37 @@
 ﻿using HookahNet.Models.Products;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HookahNet.Models
 {
-    public class HookahProduct : IProduct
+    [Table("HookahProductTable")]
+    public class HookahProduct : Product
     {
-        public string GetName()
+        public new Guid Id { get; set; }
+        public List<Product> products { get; set; }
+
+        public string Brand { get; set; }
+        public HookahProduct()
         {
-            throw new NotImplementedException();
+            products = new List<Product>();
         }
 
-        public Price GetPrice()
+        public override Price GetPrice()
         {
-            throw new NotImplementedException();
+            Price price = new Price();
+            foreach(var product in products)
+            {
+                price += product.GetPrice();
+            }
+            return price;
+        }
+
+        public void AddProduct(Product product)
+        {
+            products.Add(product);
         }
     }
 }

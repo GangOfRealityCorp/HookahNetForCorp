@@ -1,21 +1,15 @@
 ﻿using HookahNet.Models.Products;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HookahNet.Models
 {
-    public class FlaskFluidProduct : IProduct
+    [Table("FlaskFluidProductTable")]
+    public class FlaskFluidProduct : Product
     {
-        public string GetName()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Price GetPrice()
-        {
-            throw new NotImplementedException();
-        }
+        public string Color { get; set; }
     }
 }

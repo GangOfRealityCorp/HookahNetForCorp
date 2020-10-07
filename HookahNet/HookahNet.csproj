@@ -6,6 +6,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201007201840_addedProductTables.cs" />
+    <Compile Remove="Migrations\20201007201840_addedProductTables.Designer.cs" />
+    <Compile Remove="Migrations\20201007202735_addedHookahProductTable.cs" />
+    <Compile Remove="Migrations\20201007202735_addedHookahProductTable.Designer.cs" />
+    <Compile Remove="Migrations\20201007204053_v1.cs" />
+    <Compile Remove="Migrations\20201007204053_v1.Designer.cs" />
+    <Compile Remove="Migrations\20201007204234_v1.cs" />
+    <Compile Remove="Migrations\20201007204234_v1.Designer.cs" />
+    <Compile Remove="Migrations\20201007204344_v1.cs" />
+    <Compile Remove="Migrations\20201007204344_v1.Designer.cs" />
+    <Compile Remove="Migrations\20201007205735_v2.cs" />
+    <Compile Remove="Migrations\20201007205735_v2.Designer.cs" />
+    <Compile Remove="Migrations\20201007205837_v2.cs" />
+    <Compile Remove="Migrations\20201007205837_v2.Designer.cs" />
+    <Compile Remove="Migrations\20201007211005_v4.cs" />
+    <Compile Remove="Migrations\20201007211005_v4.Designer.cs" />
+    <Compile Remove="Migrations\20201007211139_v4.cs" />
+    <Compile Remove="Migrations\20201007211139_v4.Designer.cs" />
+    <Compile Remove="Migrations\20201007212823_initMigration.cs" />
+    <Compile Remove="Migrations\20201007212823_initMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.8" />
