@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace HookahNet.Controllers.ControllerDTO
 {
-    public class OrganizationDTO
+    public class FiltersDTO
     {
-        public string Name { get; set; }
-        public string SKU { get; set; }
+        public int FirstElement { get; set; }
+        public int Quantity { get; set; }
     }
 }

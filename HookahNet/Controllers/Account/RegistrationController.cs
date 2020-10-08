@@ -9,12 +9,14 @@ using Microsoft.EntityFrameworkCore;
 using HookahNet.Controllers.DBContexts;
 using HookahNet.Models;
 using HookahNet.Controllers.ControllerDTO;
+using HookahNet.Controllers.Account;
+using System.Net;
 
 namespace HookahNet.Controllers
 {
     [ApiController]
     [Route("Account/[controller]")]
-    public class RegistrationController : ControllerBase
+    public class RegistrationController : Controller
     {
         private readonly StoreContext context;
 
@@ -40,7 +42,13 @@ namespace HookahNet.Controllers
                     registrationModel.Password));
                 await context.SaveChangesAsync();
 
-                return Ok("User has been created");
+                var response = new
+                {
+                    access_token = Token.Generate(),
+                    userEmail = registrationModel.Email,
+                    message = "User has been created"
+                };
+                return Json(response);
             }
             return Conflict($"User with Email '{registrationModel.Email}' already exist");
         }

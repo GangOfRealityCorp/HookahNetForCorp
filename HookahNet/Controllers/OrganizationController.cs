@@ -13,6 +13,8 @@ using HookahNet.Controllers.ControllerDTO;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using System.Net;
 
 namespace HookahNet.Controllers.Account
 {
@@ -29,23 +31,34 @@ namespace HookahNet.Controllers.Account
 
         #region Organization
 
-        [HttpGet]
-        public async Task<IActionResult> RetreveOrganizations()
+        [HttpPost]
+        public async Task<IActionResult> RetreveOrganizationsWithFilters([FromBody] FiltersDTO filtersDTO)
         {
-            var organizations = await context.organizationTable.ToListAsync();
-            if (organizations.Count == 0)
+            try
             {
-                //TODO: add logs
-                return NoContent();
-            }
+                var selectedOrganizations = await context.organizationTable
+                        .Skip(filtersDTO.FirstElement)
+                        .Take(filtersDTO.Quantity)
+                        .ToListAsync();
 
-            return Json(organizations);
+                if (selectedOrganizations.Count == 0)
+                {
+                    //TODO: add logs
+                    return StatusCode((int)HttpStatusCode.NoContent, "Out of bounds the Organizations list");
+                }
+
+                return Json(selectedOrganizations);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, e.Message);
+            }
         }
 
-        [HttpGet("{organizationName}")]
-        public async Task<IActionResult> RetreveOrganizationByName(string organizationName)
+        [HttpGet("{organizationSKU}")]
+        public async Task<IActionResult> RetreveOrganizationBySKU(string organizationSKU)
         {
-            var organization = await context.organizationTable.FirstOrDefaultAsync((el) => el.Name == organizationName);
+            var organization = await context.organizationTable.FirstOrDefaultAsync((el) => el.SKU == organizationSKU);
             if (organization == null)
             {
                 //TODO: add logs
@@ -55,29 +68,32 @@ namespace HookahNet.Controllers.Account
             return Json(organization);
         }
 
-        [HttpPost]
+        [HttpPost("/Create")]
         public async Task<IActionResult> CreateOrganization([FromBody] OrganizationDTO organizationDTO)
         {
-            var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.Name == organizationDTO.Name);
+            if(organizationDTO.SKU == null)
+                return Conflict($"SKU is required");
+
+            var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationDTO.SKU);
             if (organization == null)
             {
-                context.organizationTable.Add(new Organization(
-                    organizationDTO.Name));
+                context.organizationTable.Add(
+                    new Organization(organizationDTO));
                 await context.SaveChangesAsync();
 
-                return Ok($"Organization with Name '{organizationDTO.Name}' has been created");
+                return Ok($"Organization with SKU '{organizationDTO.SKU}' has been created");
             }
-            return Conflict($"Organization with Name '{organizationDTO.Name}' already exist");
+            return Conflict($"Organization with SKU '{organizationDTO.SKU}' already exist");
         }
 
         #endregion
 
         #region Organization/Catalog
 
-        [HttpGet("{organizationName}/Catalog")]
-        public async Task<IActionResult> RetreveCatalogByOrganizationName(string organizationName)
+        [HttpGet("{organizationSKU}/Catalog")]
+        public async Task<IActionResult> RetreveCatalogByOrganizationSKU(string organizationSKU)
         {
-            var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.Name == organizationName);
+            var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationSKU);
             var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
             if (catalog == null)
             {
