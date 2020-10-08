@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahNet.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20201008184218_addedOrganizationSKU")]
-    partial class addedOrganizationSKU
+    [Migration("20201008223849_deleteTables")]
+    partial class deleteTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

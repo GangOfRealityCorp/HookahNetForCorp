@@ -68,7 +68,7 @@ namespace HookahNet.Controllers.Account
             return Json(organization);
         }
 
-        [HttpPost("/Create")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateOrganization([FromBody] OrganizationDTO organizationDTO)
         {
             if(organizationDTO.SKU == null)
