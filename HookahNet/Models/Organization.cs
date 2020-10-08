@@ -1,18 +1,30 @@
-﻿using System;
+﻿using HookahNet.Controllers.ControllerDTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HookahNet.Models
 {
-    public class Organization
+    public class Organization : IOrganizationInfo
     {
-        private string Name;
-        private Catalog catalog;
+        public Guid Id { get; private set; }
+        public string SKU { get; private set; }
+        public string Name { get; private set; }
+        public Catalog Catalog { get; private set; }
+
+        public Organization()
+        {
+        }
+        public Organization(OrganizationDTO DTO)
+        {
+            this.SKU = DTO.SKU;
+            this.Name = DTO.Name;
+        }
 
         public Catalog GetCatalog()
         {
-            return catalog;
+            return Catalog;
         }
     }
 }
