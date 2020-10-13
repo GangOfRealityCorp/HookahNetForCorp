@@ -4,14 +4,16 @@ using HookahNet.Controllers.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HookahNet.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201013204433_addNameAndProductType")]
+    partial class addNameAndProductType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,19 +151,6 @@ namespace HookahNet.Migrations
                     b.ToTable("HookahProductTable");
 
                     b.HasDiscriminator().HasValue("HookahProduct");
-                });
-
-            modelBuilder.Entity("HookahNet.Models.TobaccoProduct", b =>
-                {
-                    b.HasBaseType("HookahNet.Models.Products.Product");
-
-                    b.Property<string>("Brand")
-                        .HasColumnName("TobaccoProduct_Brand")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("TobaccoProductTable");
-
-                    b.HasDiscriminator().HasValue("TobaccoProduct");
                 });
 
             modelBuilder.Entity("HookahNet.Models.Catalog", b =>

@@ -29,7 +29,7 @@ namespace HookahNet.Controllers
 
         private void Sort()
         {
-            selectedOrganizations = filtersDTO.SortParameters switch
+            selectedOrganizations = filtersDTO.SortParameter switch
             {
                 SortParameters.ByName => selectedOrganizations.OrderBy(org => org.Name),
                 SortParameters.ByNameDesc => selectedOrganizations.OrderByDescending(org => org.Name),

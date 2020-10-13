@@ -9,11 +9,16 @@ namespace HookahNet.Models
     public class Catalog
     {
         public Guid Id { get; private set; }
-        private string name;
+        public string Name { get; private set; }
         private IEnumerable<Product> products { get; set; }
         private IEnumerable<Catalog> catalogs;
 
         public Guid OrganizationId { get; private set; }
+        public Catalog(Guid organizationId, string name)
+        {
+            this.OrganizationId = organizationId;
+            this.Name = name;
+        }
 
         public IEnumerable<Product> GetProducts()
         {

@@ -98,6 +98,9 @@ namespace HookahNet.Controllers.Account
         public async Task<IActionResult> RetreveCatalogByOrganizationSKU(string organizationSKU)
         {
             var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationSKU);
+            if(organization == null)
+                return NoContent();
+
             var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
             if (catalog == null)
             {
@@ -106,6 +109,27 @@ namespace HookahNet.Controllers.Account
             }
 
             return Json(catalog);
+        }
+
+        [HttpPost("{organizationSKU}/Catalog")]
+        public async Task<IActionResult> CreateCatalogByOrganizationSKU(string organizationSKU, [FromBody] string name)
+        {
+            var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationSKU);
+            if (organization == null)
+                return NoContent();
+
+            var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
+            if (catalog != null)
+            {
+                //TODO: add logs
+                return BadRequest("Catalog already exist");
+            }
+
+            context.catalogTable.Add(
+                new Catalog(organization.Id, name));
+            await context.SaveChangesAsync();
+
+            return Ok("Catalog has been created");
         }
 
         #endregion

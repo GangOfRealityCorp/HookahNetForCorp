@@ -15,6 +15,7 @@ namespace HookahNet.Controllers.DBContexts
         public DbSet<Catalog> catalogTable { get; set; }
         public DbSet<Product> productTable { get; set; }
         public DbSet<HookahProduct> hookahProductTable { get; set; }
+        public DbSet<TobaccoProduct> tobaccoProductTable { get; set; }
         public DbSet<FlaskFluidProduct> flaskFluidProductTable { get; set; }
 
     }

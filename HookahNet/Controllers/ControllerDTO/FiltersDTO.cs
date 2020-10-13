@@ -9,6 +9,6 @@ namespace HookahNet.Controllers.ControllerDTO
     {
         public int FirstElement { get; set; }
         public int Quantity { get; set; }
-        public OrganizationFilter.SortParameters SortParameters { get; set; }
+        public OrganizationFilter.SortParameters SortParameter { get; set; }
     }
 }
