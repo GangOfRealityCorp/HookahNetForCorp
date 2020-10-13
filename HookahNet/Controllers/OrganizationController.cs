@@ -36,10 +36,9 @@ namespace HookahNet.Controllers.Account
         {
             try
             {
-                var selectedOrganizations = await context.organizationTable
-                        .Skip(filtersDTO.FirstElement)
-                        .Take(filtersDTO.Quantity)
-                        .ToListAsync();
+                OrganizationFilter organizationFilter = new OrganizationFilter(context, filtersDTO);
+                var query = organizationFilter.GetQueryableOrganizationsWithFilters();
+                var selectedOrganizations = await query.ToListAsync();
 
                 if (selectedOrganizations.Count == 0)
                 {
@@ -47,7 +46,12 @@ namespace HookahNet.Controllers.Account
                     return StatusCode((int)HttpStatusCode.NoContent, "Out of bounds the Organizations list");
                 }
 
-                return Json(selectedOrganizations);
+
+                OrganizationFilter organizationFilterWithoutPagination = new OrganizationFilter(context, filtersDTO);
+                var queryWithoutPagination = organizationFilterWithoutPagination.GetQueryableOrganizationWithoutPagination();
+                int count = await queryWithoutPagination.CountAsync();
+
+                return Json(new { selectedOrganizations, count});
             }
             catch (Exception e)
             {
