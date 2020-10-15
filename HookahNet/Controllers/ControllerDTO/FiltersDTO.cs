@@ -7,8 +7,8 @@ namespace HookahNet.Controllers.ControllerDTO
 {
     public class FiltersDTO
     {
-        public int FirstElement { get; set; }
-        public int Quantity { get; set; }
-        public OrganizationFilter.SortParameters SortParameter { get; set; }
+        //public int FirstElement { get; set; }
+        //public int Quantity { get; set; }
+        //public OrganizationFilterComposition.SortParameters SortParameter { get; set; }
     }
 }

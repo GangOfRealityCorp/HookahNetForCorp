@@ -10,7 +10,7 @@ namespace HookahNet.Models
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
-        private IEnumerable<Product> products { get; set; }
+        public List<Product> Products { get; private set; }
         private IEnumerable<Catalog> catalogs;
 
         public Guid OrganizationId { get; private set; }
@@ -22,7 +22,7 @@ namespace HookahNet.Models
 
         public IEnumerable<Product> GetProducts()
         {
-            return products;
+            return Products;
         }
         public IEnumerable<Catalog> GetCatalogs()
         {

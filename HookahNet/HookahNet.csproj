@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +29,16 @@
     <Compile Remove="Migrations\20201007212823_initMigration.Designer.cs" />
     <Compile Remove="Migrations\20201013180213_changeAbstract.cs" />
     <Compile Remove="Migrations\20201013180213_changeAbstract.Designer.cs" />
+    <Compile Remove="Migrations\20201013215854_addProductsInCatalog.cs" />
+    <Compile Remove="Migrations\20201013215854_addProductsInCatalog.Designer.cs" />
+    <Compile Remove="Migrations\20201013220056_addProductsInCatalog.cs" />
+    <Compile Remove="Migrations\20201013220056_addProductsInCatalog.Designer.cs" />
+    <Compile Remove="Migrations\20201013220400_addProductsInCatalog.cs" />
+    <Compile Remove="Migrations\20201013220400_addProductsInCatalog.Designer.cs" />
+    <Compile Remove="Migrations\20201013221128_addCatalogs.cs" />
+    <Compile Remove="Migrations\20201013221128_addCatalogs.Designer.cs" />
+    <Compile Remove="Migrations\20201013221637_addCatalog.cs" />
+    <Compile Remove="Migrations\20201013221637_addCatalog.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
