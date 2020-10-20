@@ -11,7 +11,7 @@ namespace HookahNet.Models.Products
     {
         public Guid Id { get; set; }
         public Guid CatalogId { get; set; } // foreign key
-        public Price Price { get; set; }
+        public virtual Price Price { get; set; }
         public string Name { get; private set; }
         public string SKU { get; private set; }
         public ProductTypes ProductType { get; private set; }

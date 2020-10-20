@@ -10,8 +10,8 @@ namespace HookahNet.Models
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
-        public List<Product> Products { get; private set; }
-        private IEnumerable<Catalog> catalogs;
+        public virtual List<Product> Products { get; private set; }
+        //private IEnumerable<Catalog> catalogs;
 
         public Guid OrganizationId { get; private set; }
         public Catalog(Guid organizationId, string name)
@@ -26,7 +26,8 @@ namespace HookahNet.Models
         }
         public IEnumerable<Catalog> GetCatalogs()
         {
-            return catalogs;
+            return null;
+            //return catalogs;
         }
     }
 }

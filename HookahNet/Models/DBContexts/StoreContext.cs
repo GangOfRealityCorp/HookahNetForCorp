@@ -9,7 +9,15 @@ namespace HookahNet.Controllers.DBContexts
         public StoreContext(DbContextOptions options) : base(options)
         {
             Database.EnsureCreated();
+            //Database.Migrate();
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.
+                UseLazyLoadingProxies();
+        }
+
         public DbSet<GuestUser> guestUserTable { get; set; }
         public DbSet<Organization> organizationTable { get; set; }
         public DbSet<Catalog> catalogTable { get; set; }

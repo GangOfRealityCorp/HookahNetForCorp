@@ -42,10 +42,11 @@ namespace HookahNet.Controllers.Account
         public async Task<IActionResult> RetreveOrganizationBySKU(string organizationSKU)
         {
             var organization = await context.organizationTable.FirstOrDefaultAsync((el) => el.SKU == organizationSKU);
+
             if (organization == null)
             {
                 //TODO: add logs
-                return NoContent();
+                return StatusCode((int)HttpStatusCode.NoContent, $"Organization with SKU '{organizationSKU}' not found.");
             }
 
             return Json(organization);
@@ -147,6 +148,7 @@ namespace HookahNet.Controllers.Account
         {
             try
             {
+                context.ChangeTracker.LazyLoadingEnabled = false;
                 var query = organizationFilterComposition.GetQueryableOrganizationsWithFilters();
                 var selectedOrganizations = await query.ToListAsync();
 
@@ -173,23 +175,12 @@ namespace HookahNet.Controllers.Account
 
         #region Organization/Catalog
 
-        [HttpGet("{organizationSKU}/Catalog")]
-        public async Task<IActionResult> RetreveCatalogByOrganizationSKU(string organizationSKU)
-        {
-            var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationSKU);
-            if (organization == null)
-                return NoContent();
-
-            var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
-            if (catalog == null)
-            {
-                //TODO: add logs
-                return NoContent();
-            }
-
-            return Json(catalog);
-        }
-
+        /// <summary>
+        /// Create catalog for organization by organizationSKU
+        /// </summary>
+        /// <param name="organizationSKU"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpPost("{organizationSKU}/Catalog")]
         public async Task<IActionResult> CreateCatalogByOrganizationSKU(string organizationSKU, [FromBody] string name)
         {

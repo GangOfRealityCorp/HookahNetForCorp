@@ -11,7 +11,7 @@ namespace HookahNet.Models
         public Guid Id { get; private set; }
         public string SKU { get; private set; }
         public string Name { get; private set; }
-        public Catalog Catalog { get; private set; }
+        public virtual Catalog Catalog { get; private set; }
 
         public Organization()
         {

@@ -39,11 +39,18 @@
     <Compile Remove="Migrations\20201013221128_addCatalogs.Designer.cs" />
     <Compile Remove="Migrations\20201013221637_addCatalog.cs" />
     <Compile Remove="Migrations\20201013221637_addCatalog.Designer.cs" />
+    <Compile Remove="Migrations\20201020200218_addNavigationPropertyToCatalog.cs" />
+    <Compile Remove="Migrations\20201020200218_addNavigationPropertyToCatalog.Designer.cs" />
+    <Compile Remove="Migrations\20201020200714_navProperty.cs" />
+    <Compile Remove="Migrations\20201020200714_navProperty.Designer.cs" />
+    <Compile Remove="Migrations\20201020201532_addNavigationPropertyToCatalog.cs" />
+    <Compile Remove="Migrations\20201020201532_addNavigationPropertyToCatalog.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
