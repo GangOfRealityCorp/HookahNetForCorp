@@ -1,4 +1,5 @@
 ﻿using HookahNet.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,9 @@ namespace HookahNet.Controllers.Filters
 {
     public class OrganizationPaginationSample
     {
+        [JsonProperty]
         private int firstElement;
+        [JsonProperty]
         private int quantity;
         public OrganizationPaginationSample(int firstElement, int quantity)
         {

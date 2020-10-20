@@ -1,4 +1,5 @@
 ﻿using HookahNet.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace HookahNet.Controllers.Filters
     public enum SortParameters { ByName, ByNameDesc }
     public class OrganizationSortingSample
     {
+        [JsonProperty]
         private SortParameters sortParameter;
         public OrganizationSortingSample(SortParameters sortParameter)
         {

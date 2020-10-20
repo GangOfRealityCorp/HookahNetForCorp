@@ -51,7 +51,6 @@ namespace HookahNet
                         };
                     });
             services.AddDbContext<StoreContext>((options) => options.UseSqlServer(configuration.GetConnectionString("SQLServer")));
-            //services.AddSingleton<OrganizationController>();
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
@@ -61,6 +60,9 @@ namespace HookahNet
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -69,7 +71,9 @@ namespace HookahNet
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
+            app.UseSession();
+
             app.UseRouting();
             app.UseCors(builder => builder.AllowAnyOrigin()
                                           .AllowAnyMethod()

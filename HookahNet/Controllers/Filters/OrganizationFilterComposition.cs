@@ -2,6 +2,7 @@
 using HookahNet.Controllers.DBContexts;
 using HookahNet.Controllers.Filters;
 using HookahNet.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,26 @@ namespace HookahNet.Controllers
         private IQueryable<Organization> queryableOrganizations;
         private IQueryable<Organization> queryableOrganizationsWithoutPagination;
 
+        [JsonProperty]
         private OrganizationSortingSample organizationSortingSample;
+        [JsonProperty]
         private OrganizationPaginationSample organizationPaginationSample;
+        [JsonProperty]
         private OrganizationFiltersSample organizationFiltersSample;
+        [JsonProperty]
         private OrganizationSearchSample organizationSearchSample;
+        public OrganizationFilterComposition()
+        {
+        }
         public OrganizationFilterComposition(StoreContext storeContext)
         {
-            queryableOrganizations = storeContext.organizationTable;
-            queryableOrganizationsWithoutPagination = storeContext.organizationTable;
+            SetDbContext(storeContext);
+        }
+
+        public void SetDbContext(StoreContext storeContext)
+        {
+            queryableOrganizations = storeContext.organizationTable.AsQueryable();
+            queryableOrganizationsWithoutPagination = storeContext.organizationTable.AsQueryable();
         }
 
         public IQueryable<Organization> GetQueryableOrganizationsWithFilters()

@@ -29,38 +29,9 @@ namespace HookahNet.Controllers.Account
         public OrganizationController(StoreContext context)
         {
             this.context = context;
-            this.organizationFilterComposition = new OrganizationFilterComposition(context);
         }
 
         #region Organization
-
-        //[HttpPost]
-        //public async Task<IActionResult> RetreveOrganizationsWithFilters([FromBody] FiltersDTO filtersDTO)
-        //{
-        //    try
-        //    {
-        //        OrganizationFilter organizationFilter = new OrganizationFilter(context, filtersDTO);
-        //        var query = organizationFilter.GetQueryableOrganizationsWithFilters();
-        //        var selectedOrganizations = await query.ToListAsync();
-
-        //        if (selectedOrganizations.Count == 0)
-        //        {
-        //            //TODO: add logs
-        //            return StatusCode((int)HttpStatusCode.NoContent, "Out of bounds the Organizations list");
-        //        }
-
-
-        //        OrganizationFilter organizationFilterWithoutPagination = new OrganizationFilter(context, filtersDTO);
-        //        var queryWithoutPagination = organizationFilterWithoutPagination.GetQueryableOrganizationWithoutPagination();
-        //        int count = await queryWithoutPagination.CountAsync();
-
-        //        return Json(new { selectedOrganizations, count});
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.BadRequest, e.Message);
-        //    }
-        //}
 
         /// <summary>
         /// Get one organization by SKU
@@ -88,7 +59,7 @@ namespace HookahNet.Controllers.Account
         [HttpPost("Create")]
         public async Task<IActionResult> CreateOrganization([FromBody] OrganizationDTO organizationDTO)
         {
-            if(organizationDTO.SKU == null)
+            if (organizationDTO.SKU == null)
                 return Conflict($"SKU is required");
 
             var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationDTO.SKU);
@@ -114,6 +85,8 @@ namespace HookahNet.Controllers.Account
         [HttpGet("Filter")]
         public async Task<IActionResult> GetOrganizationsWithFiltersApplied()
         {
+            SetFilterComposition();
+
             organizationFilterComposition.SetFilterParameters();
             return await ReteieveOrganizationsWithFilterComposition();
         }
@@ -127,6 +100,8 @@ namespace HookahNet.Controllers.Account
         [HttpGet("Pagination")]
         public async Task<IActionResult> GetOrganizationsWithPaginationApplied(int firstElement, int quantity)
         {
+            SetFilterComposition();
+
             organizationFilterComposition.SetPaginationParameters(firstElement, quantity);
             return await ReteieveOrganizationsWithFilterComposition();
         }
@@ -139,6 +114,8 @@ namespace HookahNet.Controllers.Account
         [HttpGet("Sorting")]
         public async Task<IActionResult> GetOrganizationsWithSortingApplied(SortParameters sortParameters)
         {
+            SetFilterComposition();
+
             organizationFilterComposition.SetSortingParameters(sortParameters);
             return await ReteieveOrganizationsWithFilterComposition();
         }
@@ -150,8 +127,20 @@ namespace HookahNet.Controllers.Account
         [HttpGet("Search")]
         public async Task<IActionResult> GetOrganizationsWithSearchApplied()
         {
+            SetFilterComposition();
+
             organizationFilterComposition.SetSearchParameters();
             return await ReteieveOrganizationsWithFilterComposition();
+        }
+
+        private void SetFilterComposition()
+        {
+            if (HttpContext.Session.Keys.Contains(SessionKeys.organizationFilterComposition.ToString()))
+            {
+                this.organizationFilterComposition = HttpContext.Session.Get<OrganizationFilterComposition>(SessionKeys.organizationFilterComposition);
+                organizationFilterComposition.SetDbContext(context);
+            }
+            else this.organizationFilterComposition = new OrganizationFilterComposition(context);
         }
 
         private async Task<IActionResult> ReteieveOrganizationsWithFilterComposition()
@@ -170,6 +159,8 @@ namespace HookahNet.Controllers.Account
                 var queryWithoutPagination = organizationFilterComposition.GetQueryableOrganizationWithoutPagination();
                 int count = await queryWithoutPagination.CountAsync();
 
+                HttpContext.Session.Set(SessionKeys.organizationFilterComposition, organizationFilterComposition);
+
                 return Json(new { selectedOrganizations, count });
             }
             catch (Exception e)
@@ -180,13 +171,13 @@ namespace HookahNet.Controllers.Account
 
         #endregion
 
-            #region Organization/Catalog
+        #region Organization/Catalog
 
-            [HttpGet("{organizationSKU}/Catalog")]
+        [HttpGet("{organizationSKU}/Catalog")]
         public async Task<IActionResult> RetreveCatalogByOrganizationSKU(string organizationSKU)
         {
             var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationSKU);
-            if(organization == null)
+            if (organization == null)
                 return NoContent();
 
             var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
