@@ -1,4 +1,5 @@
-﻿using HookahNet.Models.Products;
+﻿using HookahNet.Controllers.ControllerDTO;
+using HookahNet.Models.Products;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,5 +12,13 @@ namespace HookahNet.Models
     public class FlaskFluidProduct : Product
     {
         public string Color { get; set; }
+
+        public FlaskFluidProduct()
+        {
+        }
+        public FlaskFluidProduct(ProductDTO productDTO) : base(productDTO)
+        {
+            this.Color = productDTO.FlaskFluidProductColor;
+        }
     }
 }

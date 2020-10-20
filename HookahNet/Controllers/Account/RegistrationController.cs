@@ -26,7 +26,7 @@ namespace HookahNet.Controllers
         }
 
         /// <summary>
-        /// POST: Account/Registration
+        /// Registrate user
         /// </summary>
         /// <param name="guestUser"></param>
         /// <returns></returns>

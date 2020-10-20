@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using HookahNet.Controllers.Account;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace HookahNet
 {
@@ -54,7 +56,13 @@ namespace HookahNet
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HookahNet API", Version = "v1" });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -63,7 +71,9 @@ namespace HookahNet
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
+            app.UseSession();
+
             app.UseRouting();
             app.UseCors(builder => builder.AllowAnyOrigin()
                                           .AllowAnyMethod()

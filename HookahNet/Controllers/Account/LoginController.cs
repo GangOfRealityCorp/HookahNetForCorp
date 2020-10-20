@@ -28,7 +28,7 @@ namespace HookahNet.Controllers.Account
         }
 
         /// <summary>
-        /// GET: Account/Login
+        /// Login user
         /// </summary>
         /// <param name="guestUser"></param>
         /// <returns></returns>
