@@ -38,7 +38,7 @@ namespace HookahNet.Controllers.Account
         /// Get one organization by SKU
         /// </summary>
         /// <param name="organizationSKU"></param>
-        /// <returns></returns>
+        /// <returns>Json with Organization, RootCatalog, NestedCatalogs and Products.</returns>
         [HttpGet("{organizationSKU}")]
         public async Task<IActionResult> RetreveOrganizationBySKU(string organizationSKU)
         {

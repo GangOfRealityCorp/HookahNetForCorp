@@ -9,7 +9,7 @@ namespace HookahNet.Controllers.DBContexts
         public StoreContext(DbContextOptions options) : base(options)
         {
             Database.EnsureCreated();
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
