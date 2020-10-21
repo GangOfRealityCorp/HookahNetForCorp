@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HookahNet.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20201008223849_deleteTables")]
-    partial class deleteTables
+    [Migration("20201021220402_addNullableOrgId")]
+    partial class addNullableOrgId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,13 +27,22 @@ namespace HookahNet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("OrganizationId")
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ParentCatalogId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrganizationId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[OrganizationId] IS NOT NULL");
+
+                    b.HasIndex("ParentCatalogId");
 
                     b.ToTable("catalogTable");
                 });
@@ -108,7 +117,18 @@ namespace HookahNet.Migrations
                     b.Property<Guid?>("HookahProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SKU")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CatalogId");
 
                     b.HasIndex("HookahProductId");
 
@@ -141,13 +161,29 @@ namespace HookahNet.Migrations
                     b.HasDiscriminator().HasValue("HookahProduct");
                 });
 
+            modelBuilder.Entity("HookahNet.Models.TobaccoProduct", b =>
+                {
+                    b.HasBaseType("HookahNet.Models.Products.Product");
+
+                    b.Property<string>("Brand")
+                        .HasColumnName("TobaccoProduct_Brand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("TobaccoProductTable");
+
+                    b.HasDiscriminator().HasValue("TobaccoProduct");
+                });
+
             modelBuilder.Entity("HookahNet.Models.Catalog", b =>
                 {
-                    b.HasOne("HookahNet.Models.Organization", null)
+                    b.HasOne("HookahNet.Models.Organization", "Organization")
                         .WithOne("Catalog")
-                        .HasForeignKey("HookahNet.Models.Catalog", "OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HookahNet.Models.Catalog", "OrganizationId");
+
+                    b.HasOne("HookahNet.Models.Catalog", "ParentCatalog")
+                        .WithMany("ChildrenCatalogs")
+                        .HasForeignKey("ParentCatalogId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("HookahNet.Models.Products.Price", b =>
@@ -161,8 +197,14 @@ namespace HookahNet.Migrations
 
             modelBuilder.Entity("HookahNet.Models.Products.Product", b =>
                 {
+                    b.HasOne("HookahNet.Models.Catalog", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CatalogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HookahNet.Models.HookahProduct", null)
-                        .WithMany("products")
+                        .WithMany("Products")
                         .HasForeignKey("HookahProductId");
                 });
 #pragma warning restore 612, 618

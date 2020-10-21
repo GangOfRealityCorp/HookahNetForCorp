@@ -45,6 +45,22 @@
     <Compile Remove="Migrations\20201020200714_navProperty.Designer.cs" />
     <Compile Remove="Migrations\20201020201532_addNavigationPropertyToCatalog.cs" />
     <Compile Remove="Migrations\20201020201532_addNavigationPropertyToCatalog.Designer.cs" />
+    <Compile Remove="Migrations\20201021182434_addedNestedCatalogs.cs" />
+    <Compile Remove="Migrations\20201021182434_addedNestedCatalogs.Designer.cs" />
+    <Compile Remove="Migrations\20201021184043_addedNestedCatalogs.cs" />
+    <Compile Remove="Migrations\20201021184043_addedNestedCatalogs.Designer.cs" />
+    <Compile Remove="Migrations\20201021190750_addedNestedCatalogs.cs" />
+    <Compile Remove="Migrations\20201021190750_addedNestedCatalogs.Designer.cs" />
+    <Compile Remove="Migrations\20201021191321_addedNestedCatalogs.cs" />
+    <Compile Remove="Migrations\20201021191321_addedNestedCatalogs.Designer.cs" />
+    <Compile Remove="Migrations\20201021193435_Init.cs" />
+    <Compile Remove="Migrations\20201021193435_Init.Designer.cs" />
+    <Compile Remove="Migrations\20201021193722_Init.cs" />
+    <Compile Remove="Migrations\20201021193722_Init.Designer.cs" />
+    <Compile Remove="Migrations\20201021195020_Init.cs" />
+    <Compile Remove="Migrations\20201021195020_Init.Designer.cs" />
+    <Compile Remove="Migrations\20201021220002_addNullableOrgId.cs" />
+    <Compile Remove="Migrations\20201021220002_addNullableOrgId.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

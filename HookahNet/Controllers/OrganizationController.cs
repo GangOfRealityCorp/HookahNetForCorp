@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
 using System.Net;
 using HookahNet.Controllers.Filters;
+using Newtonsoft.Json;
 
 namespace HookahNet.Controllers.Account
 {
@@ -49,7 +50,12 @@ namespace HookahNet.Controllers.Account
                 return StatusCode((int)HttpStatusCode.NoContent, $"Organization with SKU '{organizationSKU}' not found.");
             }
 
-            return Json(organization);
+            return Content(JsonConvert.SerializeObject(
+                organization, 
+                new JsonSerializerSettings 
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
         }
 
         /// <summary>
@@ -181,25 +187,49 @@ namespace HookahNet.Controllers.Account
         /// <param name="organizationSKU"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        [HttpPost("{organizationSKU}/Catalog")]
-        public async Task<IActionResult> CreateCatalogByOrganizationSKU(string organizationSKU, [FromBody] string name)
+        [HttpPost("{organizationSKU}/CreateRootCatalog")]
+        public async Task<IActionResult> CreateRootCatalogByOrganizationSKU(string organizationSKU, [FromBody] string catalogName)
         {
             var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationSKU);
             if (organization == null)
-                return NoContent();
+            {
+                return StatusCode(
+                    (int)HttpStatusCode.NoContent,
+                    $"Organization with SKU '{organizationSKU}' is not exist.");
+            }
 
             var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
             if (catalog != null)
             {
                 //TODO: add logs
-                return BadRequest("Catalog already exist");
+                return BadRequest($"Root catalog for organization '{organization.SKU}' already exist");
             }
 
             context.catalogTable.Add(
-                new Catalog(organization.Id, name));
+                new Catalog(organization.Id, catalogName));
             await context.SaveChangesAsync();
 
-            return Ok("Catalog has been created");
+            return Ok($"Root catalog for organization '{organization.SKU}' has been created");
+        }
+
+
+        [HttpPost("{parentCatalogName}/CreateNestedCatalog")]
+        public async Task<IActionResult> CreateNestedCatalogByParentCatalogName(string parentCatalogName, [FromBody] string childCatalogName)
+        {
+            //TODO: Constraint catalogs via Organizations in Claims
+            var parentCatalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.Name == parentCatalogName);
+            if (parentCatalog == null)
+            {
+                return StatusCode(
+                    (int)HttpStatusCode.NoContent,
+                    $"Parent catalog with name '{parentCatalogName}' is not exist.");
+            }
+
+            context.catalogTable.Add(
+                new Catalog(childCatalogName, (Guid?)parentCatalog.Id));
+            await context.SaveChangesAsync();
+
+            return Ok("Child catalog has been created");
         }
 
         #endregion
