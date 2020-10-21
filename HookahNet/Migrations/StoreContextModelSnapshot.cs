@@ -28,13 +28,19 @@ namespace HookahNet.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OrganizationId")
+                    b.Property<Guid?>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ParentCatalogId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrganizationId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[OrganizationId] IS NOT NULL");
+
+                    b.HasIndex("ParentCatalogId");
 
                     b.ToTable("catalogTable");
                 });
@@ -120,6 +126,8 @@ namespace HookahNet.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CatalogId");
+
                     b.HasIndex("HookahProductId");
 
                     b.ToTable("productTable");
@@ -166,11 +174,14 @@ namespace HookahNet.Migrations
 
             modelBuilder.Entity("HookahNet.Models.Catalog", b =>
                 {
-                    b.HasOne("HookahNet.Models.Organization", null)
+                    b.HasOne("HookahNet.Models.Organization", "Organization")
                         .WithOne("Catalog")
-                        .HasForeignKey("HookahNet.Models.Catalog", "OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HookahNet.Models.Catalog", "OrganizationId");
+
+                    b.HasOne("HookahNet.Models.Catalog", "ParentCatalog")
+                        .WithMany("ChildrenCatalogs")
+                        .HasForeignKey("ParentCatalogId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("HookahNet.Models.Products.Price", b =>
@@ -184,8 +195,14 @@ namespace HookahNet.Migrations
 
             modelBuilder.Entity("HookahNet.Models.Products.Product", b =>
                 {
+                    b.HasOne("HookahNet.Models.Catalog", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CatalogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HookahNet.Models.HookahProduct", null)
-                        .WithMany("products")
+                        .WithMany("Products")
                         .HasForeignKey("HookahProductId");
                 });
 #pragma warning restore 612, 618

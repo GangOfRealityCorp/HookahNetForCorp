@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
 using System.Net;
 using HookahNet.Controllers.Filters;
+using Newtonsoft.Json;
 
 namespace HookahNet.Controllers.Account
 {
@@ -42,13 +43,19 @@ namespace HookahNet.Controllers.Account
         public async Task<IActionResult> RetreveOrganizationBySKU(string organizationSKU)
         {
             var organization = await context.organizationTable.FirstOrDefaultAsync((el) => el.SKU == organizationSKU);
+
             if (organization == null)
             {
                 //TODO: add logs
-                return NoContent();
+                return StatusCode((int)HttpStatusCode.NoContent, $"Organization with SKU '{organizationSKU}' not found.");
             }
 
-            return Json(organization);
+            return Content(JsonConvert.SerializeObject(
+                organization, 
+                new JsonSerializerSettings 
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
         }
 
         /// <summary>
@@ -147,6 +154,7 @@ namespace HookahNet.Controllers.Account
         {
             try
             {
+                context.ChangeTracker.LazyLoadingEnabled = false;
                 var query = organizationFilterComposition.GetQueryableOrganizationsWithFilters();
                 var selectedOrganizations = await query.ToListAsync();
 
@@ -173,42 +181,55 @@ namespace HookahNet.Controllers.Account
 
         #region Organization/Catalog
 
-        [HttpGet("{organizationSKU}/Catalog")]
-        public async Task<IActionResult> RetreveCatalogByOrganizationSKU(string organizationSKU)
+        /// <summary>
+        /// Create catalog for organization by organizationSKU
+        /// </summary>
+        /// <param name="organizationSKU"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpPost("{organizationSKU}/CreateRootCatalog")]
+        public async Task<IActionResult> CreateRootCatalogByOrganizationSKU(string organizationSKU, [FromBody] string catalogName)
         {
             var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationSKU);
             if (organization == null)
-                return NoContent();
-
-            var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
-            if (catalog == null)
             {
-                //TODO: add logs
-                return NoContent();
+                return StatusCode(
+                    (int)HttpStatusCode.NoContent,
+                    $"Organization with SKU '{organizationSKU}' is not exist.");
             }
-
-            return Json(catalog);
-        }
-
-        [HttpPost("{organizationSKU}/Catalog")]
-        public async Task<IActionResult> CreateCatalogByOrganizationSKU(string organizationSKU, [FromBody] string name)
-        {
-            var organization = await context.organizationTable.FirstOrDefaultAsync((organization) => organization.SKU == organizationSKU);
-            if (organization == null)
-                return NoContent();
 
             var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
             if (catalog != null)
             {
                 //TODO: add logs
-                return BadRequest("Catalog already exist");
+                return BadRequest($"Root catalog for organization '{organization.SKU}' already exist");
             }
 
             context.catalogTable.Add(
-                new Catalog(organization.Id, name));
+                new Catalog(organization.Id, catalogName));
             await context.SaveChangesAsync();
 
-            return Ok("Catalog has been created");
+            return Ok($"Root catalog for organization '{organization.SKU}' has been created");
+        }
+
+
+        [HttpPost("{parentCatalogName}/CreateNestedCatalog")]
+        public async Task<IActionResult> CreateNestedCatalogByParentCatalogName(string parentCatalogName, [FromBody] string childCatalogName)
+        {
+            //TODO: Constraint catalogs via Organizations in Claims
+            var parentCatalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.Name == parentCatalogName);
+            if (parentCatalog == null)
+            {
+                return StatusCode(
+                    (int)HttpStatusCode.NoContent,
+                    $"Parent catalog with name '{parentCatalogName}' is not exist.");
+            }
+
+            context.catalogTable.Add(
+                new Catalog(childCatalogName, (Guid?)parentCatalog.Id));
+            await context.SaveChangesAsync();
+
+            return Ok("Child catalog has been created");
         }
 
         #endregion

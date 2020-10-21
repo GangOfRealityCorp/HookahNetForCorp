@@ -11,18 +11,18 @@ namespace HookahNet.Models
     public class HookahProduct : Product
     {
         public new Guid Id { get; set; }
-        public List<Product> products { get; set; }
+        public virtual List<Product> Products { get; set; }
 
         public string Brand { get; set; }
         public HookahProduct()
         {
-            products = new List<Product>();
+            Products = new List<Product>();
         }
 
         public override Price GetPrice()
         {
             Price price = new Price();
-            foreach(var product in products)
+            foreach(var product in Products)
             {
                 price += product.GetPrice();
             }
@@ -31,7 +31,7 @@ namespace HookahNet.Models
 
         public void AddProduct(Product product)
         {
-            products.Add(product);
+            Products.Add(product);
         }
     }
 }

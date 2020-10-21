@@ -6,12 +6,17 @@ using HookahNet.Controllers.ControllerDTO;
 
 namespace HookahNet.Models.Products
 {
+    /// <summary>
+    /// 1 - Tobacco
+    /// 2 - Hookah
+    /// 3 - FlaskFluid
+    /// </summary>
     public enum ProductTypes { Tobacco = 1, Hookah, FlaskFluid }
     public abstract class Product
     {
-        public Guid Id { get; set; }
-        public Guid CatalogId { get; set; } // foreign key
-        public Price Price { get; set; }
+        public Guid Id { get; private set; }
+        public Guid CatalogId { get; private set; } // foreign key
+        public virtual Price Price { get; private set; }
         public string Name { get; private set; }
         public string SKU { get; private set; }
         public ProductTypes ProductType { get; private set; }

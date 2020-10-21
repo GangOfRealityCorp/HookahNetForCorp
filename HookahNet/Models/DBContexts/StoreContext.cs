@@ -9,7 +9,26 @@ namespace HookahNet.Controllers.DBContexts
         public StoreContext(DbContextOptions options) : base(options)
         {
             Database.EnsureCreated();
+            Database.Migrate();
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.
+                UseLazyLoadingProxies();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Catalog>()
+                        .HasOne(x => x.ParentCatalog)
+                        .WithMany(x => x.ChildrenCatalogs)
+                        .HasForeignKey(x => x.ParentCatalogId)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+        }
+
         public DbSet<GuestUser> guestUserTable { get; set; }
         public DbSet<Organization> organizationTable { get; set; }
         public DbSet<Catalog> catalogTable { get; set; }
