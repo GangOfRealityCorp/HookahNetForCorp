@@ -22,10 +22,15 @@ namespace HookahNet
 {
     public class Startup
     {
-        private IConfiguration configuration;
-        public Startup(IConfiguration configuration)
+        private IConfiguration Configuration { get; set; }
+        private IWebHostEnvironment Environment { get; set; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            this.configuration = configuration;
+            this.Environment = environment;
+            this.Configuration = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .AddJsonFile($"appsettings.{Environment.EnvironmentName}.json")
+                    .Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -50,7 +55,8 @@ namespace HookahNet
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                         };
                     });
-            services.AddDbContext<StoreContext>((options) => options.UseSqlServer(configuration.GetConnectionString("SQLServer")));
+
+            services.AddDbContext<StoreContext>((options) => options.UseSqlServer(Configuration.GetConnectionString("SQLServer")));
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +65,30 @@ namespace HookahNet
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                c.AddSecurityDefinition("jwt_auth1", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Bearer",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer",
+                });
+                OpenApiSecurityScheme securityScheme = new OpenApiSecurityScheme()
+                {
+                    Reference = new OpenApiReference()
+                    {
+                        Id = "jwt_auth1",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+                OpenApiSecurityRequirement securityRequirements =
+                    new OpenApiSecurityRequirement()
+                    {
+                        {securityScheme, new string[] { }},
+                    };
+
+                c.AddSecurityRequirement(securityRequirements);
             });
 
             services.AddDistributedMemoryCache();
