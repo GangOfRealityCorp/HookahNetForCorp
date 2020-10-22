@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Net;
 using HookahNet.Controllers.Filters;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace HookahNet.Controllers.Account
 {
@@ -46,7 +47,7 @@ namespace HookahNet.Controllers.Account
 
             if (organization == null)
             {
-                //TODO: add logs
+                Log.Warning("Attempt to retrieve non-existent organisation.");
                 return StatusCode((int)HttpStatusCode.NoContent, $"Organization with SKU '{organizationSKU}' not found.");
             }
 
@@ -160,7 +161,7 @@ namespace HookahNet.Controllers.Account
 
                 if (selectedOrganizations.Count == 0)
                 {
-                    //TODO: add logs
+                    Log.Warning("Attempt to apply filters with incorrect parameters.");
                     return StatusCode((int)HttpStatusCode.NoContent, "Out of bounds the Organizations list");
                 }
 
@@ -173,6 +174,7 @@ namespace HookahNet.Controllers.Account
             }
             catch (Exception e)
             {
+                Log.Error(e, e.Message);
                 return StatusCode((int)HttpStatusCode.BadRequest, e.Message);
             }
         }
@@ -201,7 +203,7 @@ namespace HookahNet.Controllers.Account
             var catalog = await context.catalogTable.FirstOrDefaultAsync((catalog) => catalog.OrganizationId == organization.Id);
             if (catalog != null)
             {
-                //TODO: add logs
+                Log.Warning($"Attempt to create existing root catalog to organization '{organization.SKU}'.");
                 return BadRequest($"Root catalog for organization '{organization.SKU}' already exist");
             }
 

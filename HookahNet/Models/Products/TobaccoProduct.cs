@@ -11,7 +11,8 @@ namespace HookahNet.Models
     [Table("TobaccoProductTable")]
     public class TobaccoProduct : Product
     {
-        public string Brand { get; set; }
+        public string Brand { get; private set; }
+        public string Strength { get; private set; }
         public TobaccoProduct()
         {
         }

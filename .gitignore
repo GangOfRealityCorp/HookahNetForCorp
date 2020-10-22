@@ -338,3 +338,5 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/HookahNet/error-logs.txt
+/HookahNet/info-logs.txt
