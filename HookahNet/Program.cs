@@ -21,7 +21,6 @@ namespace HookahNet
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
                 try
                 {
@@ -30,6 +29,7 @@ namespace HookahNet
                 }
                 catch (Exception ex)
                 {
+                    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                     var logger = loggerFactory.CreateLogger<Program>();
                     logger.LogError(ex, "An error occured during migration");
                 }

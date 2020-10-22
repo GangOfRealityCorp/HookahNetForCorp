@@ -17,6 +17,8 @@ using HookahNet.Controllers.Account;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
+using Serilog;
+using Serilog.Events;
 
 namespace HookahNet
 {
@@ -101,6 +103,17 @@ namespace HookahNet
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .Enrich.FromLogContext()
+            .WriteTo.File(
+                path: Path.Combine(Directory.GetCurrentDirectory(), "info-logs.txt"), 
+                restrictedToMinimumLevel: LogEventLevel.Information)
+            .WriteTo.File(
+                path: Path.Combine(Directory.GetCurrentDirectory(), "error-logs.txt"), 
+                restrictedToMinimumLevel: LogEventLevel.Error)
+            .CreateLogger();
 
             app.UseSession();
 
