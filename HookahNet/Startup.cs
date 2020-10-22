@@ -104,14 +104,25 @@ namespace HookahNet
                 app.UseDeveloperExceptionPage();
             }
 
+            //Log.Logger = new LoggerConfiguration()
+            //.MinimumLevel.Debug()
+            //.Enrich.FromLogContext()
+            //.WriteTo.File(
+            //    path: Path.Combine(Directory.GetCurrentDirectory(), "info-logs.txt"), 
+            //    restrictedToMinimumLevel: LogEventLevel.Information)
+            //.WriteTo.File(
+            //    path: Path.Combine(Directory.GetCurrentDirectory(), "error-logs.txt"), 
+            //    restrictedToMinimumLevel: LogEventLevel.Error)
+            //.CreateLogger();
+
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .Enrich.FromLogContext()
             .WriteTo.File(
-                path: Path.Combine(Directory.GetCurrentDirectory(), "info-logs.txt"), 
+                path: Path.Combine("/LogFiles/StoreLogs/", "info-logs.txt"),
                 restrictedToMinimumLevel: LogEventLevel.Information)
             .WriteTo.File(
-                path: Path.Combine(Directory.GetCurrentDirectory(), "error-logs.txt"), 
+                path: "error-logs.txt",
                 restrictedToMinimumLevel: LogEventLevel.Error)
             .CreateLogger();
 
