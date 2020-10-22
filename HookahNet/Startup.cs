@@ -22,10 +22,15 @@ namespace HookahNet
 {
     public class Startup
     {
-        private IConfiguration configuration;
-        public Startup(IConfiguration configuration)
+        private IConfiguration Configuration { get; set; }
+        private IWebHostEnvironment Environment { get; set; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            this.configuration = configuration;
+            this.Environment = environment;
+            this.Configuration = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .AddJsonFile($"appsettings.{Environment.EnvironmentName}.json")
+                    .Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -50,7 +55,8 @@ namespace HookahNet
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                         };
                     });
-            services.AddDbContext<StoreContext>((options) => options.UseSqlServer(configuration.GetConnectionString("SQLServer")));
+
+            services.AddDbContext<StoreContext>((options) => options.UseSqlServer(Configuration.GetConnectionString("SQLServer")));
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
@@ -76,7 +82,7 @@ namespace HookahNet
                         Type = ReferenceType.SecurityScheme
                     }
                 };
-                OpenApiSecurityRequirement securityRequirements = 
+                OpenApiSecurityRequirement securityRequirements =
                     new OpenApiSecurityRequirement()
                     {
                         {securityScheme, new string[] { }},
