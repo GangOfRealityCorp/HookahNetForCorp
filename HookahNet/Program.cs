@@ -25,7 +25,7 @@ namespace HookahNet
                 try
                 {
                     var context = services.GetRequiredService<StoreContext>();
-                    await context.Database.MigrateAsync();
+                    //await context.Database.MigrateAsync();
                 }
                 catch (Exception ex)
                 {
