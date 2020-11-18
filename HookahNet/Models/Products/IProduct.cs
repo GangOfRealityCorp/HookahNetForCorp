@@ -9,7 +9,8 @@ namespace HookahNet.Models
 {
     public interface IProduct
     {
-        Price GetPrice();
+        Guid Id { get; }
+        Price Price { get; }
         string GetName();
     }
 }

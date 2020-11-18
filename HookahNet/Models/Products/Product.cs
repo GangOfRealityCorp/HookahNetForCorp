@@ -12,7 +12,7 @@ namespace HookahNet.Models.Products
     /// 3 - FlaskFluid
     /// </summary>
     public enum ProductTypes { Tobacco = 1, Hookah, FlaskFluid }
-    public abstract class Product
+    public abstract class Product : IProduct
     {
         public Guid Id { get; private set; }
         public Guid CatalogId { get; private set; } // foreign key
@@ -36,9 +36,9 @@ namespace HookahNet.Models.Products
             return Name;
         }
 
-        public virtual Price GetPrice()
-        {
-            return Price;
-        }
+        //public virtual Price GetPrice()
+        //{
+        //    return Price;
+        //}
     }
 }

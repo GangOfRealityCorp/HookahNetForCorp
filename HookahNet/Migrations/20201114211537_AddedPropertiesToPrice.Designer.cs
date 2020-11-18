@@ -4,14 +4,16 @@ using HookahNet.Controllers.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HookahNet.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201114211537_AddedPropertiesToPrice")]
+    partial class AddedPropertiesToPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +104,7 @@ namespace HookahNet.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("priceTable");
+                    b.ToTable("Price");
                 });
 
             modelBuilder.Entity("HookahNet.Models.Products.Product", b =>
@@ -147,12 +149,14 @@ namespace HookahNet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<Guid?>("totalId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("shoppingCartTable");
+                    b.HasIndex("totalId");
+
+                    b.ToTable("ShoppingCart");
                 });
 
             modelBuilder.Entity("HookahNet.Models.ShoppingCartItem", b =>
@@ -170,8 +174,8 @@ namespace HookahNet.Migrations
                     b.Property<Guid?>("ShoppingCartId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<Guid?>("SubtotalId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -179,7 +183,9 @@ namespace HookahNet.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("shoppingCartItemTable");
+                    b.HasIndex("SubtotalId");
+
+                    b.ToTable("ShoppingCartItem");
                 });
 
             modelBuilder.Entity("HookahNet.Models.ShoppingCartMapping", b =>
@@ -277,6 +283,13 @@ namespace HookahNet.Migrations
                         .HasForeignKey("HookahProductId");
                 });
 
+            modelBuilder.Entity("HookahNet.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("HookahNet.Models.Products.Price", "total")
+                        .WithMany()
+                        .HasForeignKey("totalId");
+                });
+
             modelBuilder.Entity("HookahNet.Models.ShoppingCartItem", b =>
                 {
                     b.HasOne("HookahNet.Models.Products.Product", "Product")
@@ -286,6 +299,10 @@ namespace HookahNet.Migrations
                     b.HasOne("HookahNet.Models.ShoppingCart", null)
                         .WithMany("shoppingCartItems")
                         .HasForeignKey("ShoppingCartId");
+
+                    b.HasOne("HookahNet.Models.Products.Price", "Subtotal")
+                        .WithMany()
+                        .HasForeignKey("SubtotalId");
                 });
 
             modelBuilder.Entity("HookahNet.Models.ShoppingCartMapping", b =>

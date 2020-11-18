@@ -4,14 +4,16 @@ using HookahNet.Controllers.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HookahNet.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201117211334_changePriceToDecimal")]
+    partial class changePriceToDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +104,7 @@ namespace HookahNet.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("priceTable");
+                    b.ToTable("Price");
                 });
 
             modelBuilder.Entity("HookahNet.Models.Products.Product", b =>
@@ -152,7 +154,7 @@ namespace HookahNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("shoppingCartTable");
+                    b.ToTable("ShoppingCart");
                 });
 
             modelBuilder.Entity("HookahNet.Models.ShoppingCartItem", b =>
@@ -179,7 +181,7 @@ namespace HookahNet.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("shoppingCartItemTable");
+                    b.ToTable("ShoppingCartItem");
                 });
 
             modelBuilder.Entity("HookahNet.Models.ShoppingCartMapping", b =>

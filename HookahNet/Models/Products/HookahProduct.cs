@@ -19,15 +19,15 @@ namespace HookahNet.Models
             Products = new List<Product>();
         }
 
-        public override Price GetPrice()
-        {
-            Price price = new Price();
-            foreach(var product in Products)
-            {
-                price += product.GetPrice();
-            }
-            return price;
-        }
+        //public override Price GetPrice()
+        //{
+        //    Price price = new Price();
+        //    foreach (var product in Products)
+        //    {
+        //        price += product.GetPrice();
+        //    }
+        //    return price;
+        //}
 
         public void AddProduct(Product product)
         {

@@ -9,16 +9,21 @@ namespace HookahNet.Models
 {
     public class ShoppingCartItem
     {
-        private readonly IProduct product;
+        public Guid Id { get; private set; }
+        //public IProduct Product { get; private set; }
+        public virtual Product Product { get; private set; }
         private int amount;
-        private Price subtotal;
-        public ShoppingCartItem(IProduct product, int amount)
+        public decimal Subtotal { get; private set; }
+        public ShoppingCartItem()
         {
-            this.product = product;
+        }
+        public ShoppingCartItem(Product product, int amount)
+        {
+            this.Product = product;
             this.Amount = amount;
         }
 
-        private int Amount
+        public int Amount
         {
             get
             {
@@ -27,13 +32,8 @@ namespace HookahNet.Models
             set
             {
                 amount = value;
-                subtotal = product.GetPrice() * amount;
+                Subtotal = Product.Price.Value * amount;
             }
-        }
-
-        public Price GetSubtotal()
-        {
-            return subtotal;
         }
     }
 }

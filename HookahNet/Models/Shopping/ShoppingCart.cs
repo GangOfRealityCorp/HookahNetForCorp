@@ -9,24 +9,29 @@ namespace HookahNet.Models
 {
     public class ShoppingCart
     {
-        private List<ShoppingCartItem> shoppingCartItems;
-        private Price total;
+        public Guid Id { get; private set; }
+        public virtual List<ShoppingCartItem> shoppingCartItems { get; private set; } = new();
+        public decimal Total { get; private set; }
 
-        public Price GetTotal()
+        public void AddItemToList(Product product, int amount, out bool isModified)
         {
-            return total;
-        }
-        public void AddItemToList(IProduct product, int amount)
-        {
-            shoppingCartItems.Add(new ShoppingCartItem(product, amount));
-            total = new Price(
-                shoppingCartItems.Select((el) => el.GetSubtotal())
-                                 .Sum((subtotal) => subtotal.value),
-                total.currency);
-        }
-        public List<ShoppingCartItem> GetItems()
-        {
-            return shoppingCartItems;
+            if(shoppingCartItems.Any((item) => item.Product.Id == product.Id))
+            {
+                var item = shoppingCartItems.First((item) => item.Product.Id == product.Id);
+                var index = shoppingCartItems.IndexOf(item);
+                shoppingCartItems[index] = new ShoppingCartItem(item.Product, amount + item.Amount);
+                isModified = true;
+            }
+            else
+            {
+                shoppingCartItems.Add(new ShoppingCartItem(product, amount));
+                isModified = false;
+            }
+
+            Total = 
+                shoppingCartItems
+                    .Select((el) => el.Subtotal)
+                    .Sum((subtotal) => subtotal);
         }
     }
 }
