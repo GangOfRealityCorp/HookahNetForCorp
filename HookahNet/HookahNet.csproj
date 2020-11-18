@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
@@ -61,6 +61,8 @@
     <Compile Remove="Migrations\20201021195020_Init.Designer.cs" />
     <Compile Remove="Migrations\20201021220002_addNullableOrgId.cs" />
     <Compile Remove="Migrations\20201021220002_addNullableOrgId.Designer.cs" />
+    <Compile Remove="Migrations\20201114212103_changePriceIntoProduct.cs" />
+    <Compile Remove="Migrations\20201114212103_changePriceIntoProduct.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

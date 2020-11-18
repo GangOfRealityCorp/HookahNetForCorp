@@ -34,6 +34,9 @@ namespace HookahNet.Controllers.DBContexts
         public DbSet<HookahProduct> hookahProductTable { get; set; }
         public DbSet<TobaccoProduct> tobaccoProductTable { get; set; }
         public DbSet<FlaskFluidProduct> flaskFluidProductTable { get; set; }
-
+        public DbSet<ShoppingCartMapping> shoppingCartMappingTable { get; set; }
+        public DbSet<ShoppingCart> shoppingCartTable { get; set; }
+        public DbSet<ShoppingCartItem> shoppingCartItemTable { get; set; }
+        public DbSet<Price> priceTable { get; set; }
     }
 }
