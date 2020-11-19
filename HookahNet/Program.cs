@@ -26,6 +26,7 @@ namespace HookahNet
                 {
                     var context = services.GetRequiredService<StoreContext>();
                     //await context.Database.MigrateAsync();
+                    //check git webhok
                 }
                 catch (Exception ex)
                 {
