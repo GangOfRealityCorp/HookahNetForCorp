@@ -7,7 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["HookahNet/HookahNet.csproj", "HookahNet.csproj"]
-RUN dotnet restore "HookahNet/HookahNet.csproj"
+RUN dotnet restore "HookahNet.csproj"
 COPY . .
 WORKDIR "/src/HookahNet"
 RUN dotnet build "HookahNet.csproj" -c Release -o /app/build
