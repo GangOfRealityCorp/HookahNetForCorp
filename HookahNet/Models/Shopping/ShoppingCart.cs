@@ -10,7 +10,7 @@ namespace HookahNet.Models
     public class ShoppingCart
     {
         public Guid Id { get; private set; }
-        public virtual List<ShoppingCartItem> shoppingCartItems { get; private set; } = new();
+        public virtual List<ShoppingCartItem> shoppingCartItems { get; private set; } = new List<ShoppingCartItem>();
         public decimal Total { get; private set; }
 
         public void AddItemToList(Product product, int amount, out bool isModified)
