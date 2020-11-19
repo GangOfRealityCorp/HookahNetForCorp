@@ -27,10 +27,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["HookahNet.csproj", "HookahNet.csproj"]
+COPY ["HookahNet/HookahNet.csproj", "HookahNet.csproj"]
 RUN dotnet restore "HookahNet.csproj"
 COPY . .
-WORKDIR "/src"
+WORKDIR "/src/HookahNet"
 RUN dotnet build "HookahNet.csproj" -c Release -o /app/build
 
 FROM build AS publish
