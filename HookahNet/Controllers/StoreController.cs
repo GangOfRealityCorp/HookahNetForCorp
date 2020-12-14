@@ -36,7 +36,7 @@ namespace HookahNet.Controllers
 
 
         /// <summary>
-        /// Add product to Shopping Cart ----- .Net Version is 5.0 ------
+        /// Add product to Shopping Cart ----- This Is Sparta(develop branch) ------
         /// </summary>
         /// <param name="shoppingCartOwner"></param>
         /// <param name="productSku"></param>
