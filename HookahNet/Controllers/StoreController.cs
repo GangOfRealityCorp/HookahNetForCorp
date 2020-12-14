@@ -36,7 +36,7 @@ namespace HookahNet.Controllers
 
 
         /// <summary>
-        /// Add product to Shopping Cart ----- This Is Sparta(develop branch) ------
+        /// Add product to Shopping Cart ----- This Is Sparta(develop branch v2) ------
         /// </summary>
         /// <param name="shoppingCartOwner"></param>
         /// <param name="productSku"></param>
