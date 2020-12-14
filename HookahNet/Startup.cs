@@ -58,7 +58,7 @@ namespace HookahNet
                         };
                     });
 
-            services.AddDbContext<StoreContext>((options) => options.UseSqlServer(Configuration.GetConnectionString("SQLCONNSTR_SQLServer")));
+            services.AddDbContext<StoreContext>((options) => options.UseSqlServer(Configuration.GetConnectionString("SQLServer")));
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
