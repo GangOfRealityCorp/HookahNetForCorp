@@ -32,6 +32,7 @@ namespace HookahNet
             this.Configuration = new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json")
                     .AddJsonFile($"appsettings.{Environment.EnvironmentName}.json")
+                    .AddEnvironmentVariables()
                     .Build();
         }
 
